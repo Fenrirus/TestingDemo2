@@ -1,16 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace TestingDemo2.Controllers
+﻿namespace TestingDemo2.Controllers
 {
+    using System.Web.Mvc;
+    using TestingDemo2.Data;
+
     public class AdminController : Controller
     {
-        // GET: Admin
-        public ActionResult Index()
+        private readonly IUserRepository repository;
+
+        public AdminController(IUserRepository repo)
         {
+            repository = repo;
+        }
+
+        public ActionResult ChangeLoginName(string oldName, string newName)
+        {
+            User user = repository.FetchLoginByName(oldName);
+            user.LoginName = newName;
+            repository.SubmitChanges();
             return View();
         }
     }
